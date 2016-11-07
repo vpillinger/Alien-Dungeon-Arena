@@ -1,13 +1,12 @@
 import random, numpy as np
 
 # columns are (N,E,S,W)
-def generate_maze(size):
+def generate_maze(length):
     dx = {"E": 0, "W": 0, "N": -1, "S": 1}
     dy = {"E": 1, "W": -1, "N": 0, "S": 0}
     directions = ["N", "S", "E", "W"]
     opposite_directions = {"E": "W", "W": "E", "N": "S", "S": "N"}
     columns = {"N": 0, "E": 1, "S": 2, "W": 3}
-    
 
     def walk(maze, i, j, to_visited = 0):
         random.shuffle(directions)
@@ -29,11 +28,16 @@ def generate_maze(size):
                     return ni,nj
         return None,None
 
+    #---- Method Start ----
+    # Trivial Case
+    if(length == 0):
+        return np.zeros(0)
+
     # columns are (N,E,S,W,Visited)
-    maze = np.zeros((size,size,5), dtype=np.uint8)
+    maze = np.zeros((length, length, 5), dtype=np.uint8)
 
     # start in random place
-    i,j = random.randrange(size), random.randrange(size)
+    i,j = random.randrange(length), random.randrange(length)
 
     while 1:
         #print_maze(maze)
@@ -45,6 +49,7 @@ def generate_maze(size):
 
     # We don't need visited column anymore
     return maze[:,:,0:4]
+
 
 
 def print_maze(maze):
@@ -68,5 +73,3 @@ def print_maze(maze):
             else:
                 line += " "
         print(line)
-
-print_maze(generate_maze(50))
