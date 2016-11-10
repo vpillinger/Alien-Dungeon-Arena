@@ -1,4 +1,5 @@
-import unittest, MazeGenerator, numpy as np, queue
+import unittest, MazeGenerator, numpy as np
+from collections import deque
 
 
 class MyTestCase(unittest.TestCase):
@@ -23,21 +24,34 @@ class MyTestCase(unittest.TestCase):
     def test_completeness(self):
         """Use Breadth-First-Search to test that maze graph is complete (all nodes connected)
         The number of visited nodes should be equal to the maze's size"""
-        lengths = [1,5,10,20,50]
+        lengths = [1,5,20,50,1000]
+        directions = (-1, 0), (0, 1),(1, 0), (0, -1) #NESW
+
         for length in lengths:
             maze = MazeGenerator.generate_maze(length)
-            q = queue.Queue(maze.size)
-            # BFS
-            visited = set()
-            q.put((0,0))
-            while not q.empty():
-                # pop to visited
-                visited.add(q._get())
-                # get neighbors
-                print ('get neighbors')
-                # add neighbors to queue
-            # not implemented yet
-            #self.assertEqual(maze.size, len(visited))
+            q = deque()
 
+            visited = set()
+            q.append((0,0))
+            while q:
+                # pop to visited
+                current = q.popleft()
+                visited.add(current)
+
+                # get neighbors
+                neighbors = []
+                for i, adj in enumerate(maze[current[0],current[1]]):
+                    if adj:
+                        neighbors.append(directions[i])
+
+                # add neighbors to queue
+                for neighbor in neighbors:
+                    n = (current[0] + neighbor[0], current[1] + neighbor[1])
+                    if n not in visited:
+                        q.append(n)
+
+            self.assertEqual(maze.size, len(visited) * 4)
+
+# BFS
 if __name__ == '__main__':
     unittest.main()
