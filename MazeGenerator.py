@@ -1,87 +1,89 @@
-import random, numpy as np
+import random
 
-# columns are (N,E,S,W)
 def generate_maze(length):
 
-    def walk(maze, i, j, is_visited = 0):
-        """Randomly connect a node to an unvisited neighbor two adjacent nodes
-        if is_visited=1 then connect to an already visited node"""
-        dx = {"E": 0, "W": 0, "N": -1, "S": 1}
-        dy = {"E": 1, "W": -1, "N": 0, "S": 0}
-        directions = ["N", "S", "E", "W"]
-        opposite_directions = {"E": "W", "W": "E", "N": "S", "S": "N"}
-        columns = {"N": 0, "E": 1, "S": 2, "W": 3}
+    def walk(maze, cur):
+        #Randomly connect this node to an unvisited neighbor.
 
         random.shuffle(directions)
         for dir in directions:
-            ni, nj = i + dx[dir], j + dy[dir]
-            if ni >= 0 and ni < len(maze) and nj >= 0 and nj < len(maze) \
-                    and maze[ni,nj,4] == is_visited:
-                maze[i, j, columns[dir]], maze[i, j, 4] = 1, 1
-                maze[ni, nj, columns[opposite_directions[dir]]], maze[ni, nj, 4] = 1,1
-                return ni,nj
-        return None,None
+            n = (cur[0] + dir[0], cur[1] + dir[1])
+            if (n[0] >= 0 and n[0] < len(maze)) and (n[1] >= 0 and n[1] < len(maze)) \
+                    and (n not in visited):
+                maze[cur[0]][cur[1]].append(n)
+                maze[n[0]][n[1]].append(cur)
+                visited.add(n)
+                visited.add(cur)
+                return n
+        return None
+
+    def hunt_walk(maze, cur):
+        #Randomly connect this node to a visited neighbor.
+
+        random.shuffle(directions)
+        for dir in directions:
+            n = (cur[0] + dir[0], cur[1] + dir[1])
+            if (n[0] >= 0 and n[0] < len(maze)) and (n[1] >= 0 and n[1] < len(maze)) \
+                    and (n in visited):
+                maze[cur[0]][cur[1]].append(n)
+                maze[n[0]][n[1]].append(cur)
+                visited.add(cur)
+                return cur
+        return None
 
     def hunt(maze, skip_rows = 0):
-        """top->bottom left->right search for an unvisited node adjacent to a visited node
-        and connect them"""
-        ni, nj = None, None
-        for i in range(skip_rows, len(maze)):
+        #Top->bottom left->right search for an unvisited node adjacent to a visited node
+        #and connect them.
+
+
+        cur = None
+        for i in range(skip_rows, len(maze)): # enumerate with slice doesn't work here?
             row_count = 0
-            for j in range(len(maze)):
-                if maze[i,j,4] == 0:
-                    ni, nj = walk(maze,i,j,1)
+            for j, cell in enumerate(maze[i]):
+                if len(cell) == 0:
+                    cur = hunt_walk(maze, (i, j))
                 else:
                     row_count += 1
-                if ni != None:
-                    return ni,nj,skip_rows
-            if(row_count == len(maze)):
+                if cur is not None:
+                    return cur, skip_rows
+            if(row_count == len(maze)): # if every node in row was visited already
                 skip_rows += 1
-
-        return None,None,skip_rows
+        return None, skip_rows
 
     #---- Method Start ----
-    # Trivial Case
+
+    visited = set()
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
     if(length == 0):
-        return np.zeros(0)
-
-    # columns are (N,E,S,W,Visited)
-    maze = np.zeros((length, length, 5), dtype=np.uint8)
-
-    # start in random place
-    i,j,done_rows = random.randrange(length), random.randrange(length), 0
-
+        return [[[]]]
+    maze = [[[] for j in range(length)] for i in range(length)]
+    cur, done_rows = (random.randrange(length), random.randrange(length)), 0
     while 1:
-        #print_maze(maze)
-        i,j = walk(maze, i, j)
-        if i is None:
-            i,j,done_rows = hunt(maze, done_rows)
-            if i is None:
+        cur = walk(maze, cur)
+        if cur is None:
+            cur, done_rows = hunt(maze, done_rows)
+            if cur is None:
                 break
-
-    # We don't need visited column anymore
-    return maze[:,:,0:4]
-
-
+    return maze
 
 def print_maze(maze):
-    # top of maze
+
     line = ""
-    for i in range(len(maze)):
+    for row in maze:  # top of maze
         line += " _"
     print(line)
 
-    # we only need to do one side of each connection: so start in top-left look east&south
-    for i in range(len(maze)):
-        # left of maze
-        line = "|"
-        for j in range(len(maze)):
-            if (maze[i, j, 2] == 0):
+    # We only need to do one side of each connection: so start in top-left look east&south.
+    for i, row in enumerate(maze):
+        line = "|" # left of maze
+        for j, cell in enumerate(row):
+            if (i+1, j) in cell:
+                line += " "
+            else:
                 line += "_"
-            else:
+            if (i, j+1) in cell:
                 line += " "
-            if (maze[i, j, 1] == 0):
+            else:
                 line += "|"
-            else:
-                line += " "
         print(line)
