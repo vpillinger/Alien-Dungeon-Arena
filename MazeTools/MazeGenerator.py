@@ -1,6 +1,12 @@
 import random
 
 def generate_maze(length):
+    """Return a randomly generated maze of the specified dimension (length X length).
+    This maze is represented as 3D python array. The first two dimension are i, j.
+    The third dimension is the list of tuples representing adjacent spaces.
+
+    Keyword arguments:
+    length -- the length of 1 side of the maze"""
 
     def walk(maze, cur):
         #Randomly connect this node to an unvisited neighbor.

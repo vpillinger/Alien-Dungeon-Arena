@@ -1,5 +1,7 @@
-import unittest, MazeGenerator
+import unittest
 from collections import deque
+
+from MazeTools import MazeGenerator
 
 
 class MazeGeneratorTest(unittest.TestCase):
