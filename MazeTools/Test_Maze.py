@@ -5,33 +5,49 @@ from MazeTools import Maze
 class MazeTest(unittest.TestCase):
 
     def test_init_maze(self):
-        maze = Maze.Maze(self.maze)
-        self.assertEquals(self.maze, maze.maze)
+        self.assertEquals(self.pre_made_maze, self.maze.maze)
 
     def test_make_maze(self):
         maze = Maze.make_maze(10)
         self.assertEquals(10, len(maze.maze))
 
-    def test_go_direction(self):
-        self.assertEquals(False, True)
-        
     def test_go_east(self):
-        self.assertEquals(False, True)
+        path = self.maze.go_east((0, 0))
+        self.assertEquals([(0, 0), (0, 1), (0, 2), (0, 3)], path)
+
+    def test_go_east_0(self):
+        path = self.maze.go_east((0, 3))
+        self.assertEquals([(0, 3)], path)
 
     def test_go_west(self):
-        self.assertEquals(False, True)
+        path = self.maze.go_west((0, 3))
+        self.assertEquals([(0, 3), (0, 2), (0, 1), (0, 0)], path)
+
+    def test_go_west_0(self):
+        path = self.maze.go_west((0, 0))
+        self.assertEquals([(0, 0)], path)
 
     def test_go_north(self):
-        self.assertEquals(False, True)
+        path = self.maze.go_north((9, 0))
+        self.assertEquals([(9, 0), (8, 0), (7, 0), (6, 0)], path)
+
+    def test_go_north_0(self):
+        path = self.maze.go_east((0, 0))
+        self.assertEquals([(0, 0)], path)
 
     def test_go_south(self):
-        self.assertEquals(False, True)
+        path = self.maze.go_south((6, 0))
+        self.assertEquals([(6, 0), (7, 0), (8, 0), (9, 0)], path)
+
+    def test_go_south_0(self):
+        path = self.maze.go_east((9, 0))
+        self.assertEquals([(9, 0)], path)
 
     def test_bfs(self):
         self.assertEquals(False, True)
 
     def setUp(self):
-        self.maze = [[[(0, 1), (1, 0)], [(0, 2), (0, 0)], [(0, 3), (0, 1)], [(1, 3), (0, 2)], [(0, 5), (1, 4)], [(0, 6), (0, 4), (1, 5)], [(0, 7), (0, 5)], [(0, 8), (0, 6)], [(0, 7), (1, 8)], [(1, 9)]],
+        self.pre_made_maze = [[[(0, 1), (1, 0)], [(0, 2), (0, 0)], [(0, 3), (0, 1)], [(1, 3), (0, 2)], [(0, 5), (1, 4)], [(0, 6), (0, 4), (1, 5)], [(0, 7), (0, 5)], [(0, 8), (0, 6)], [(0, 7), (1, 8)], [(1, 9)]],
                 [[(0, 0), (2, 0)], [(2, 1), (1, 2)], [(1, 1), (2, 2)], [(1, 4), (0, 3)], [(0, 4), (1, 3)], [(0, 5), (1, 6)], [(1, 5), (2, 6), (1, 7)], [(1, 6), (2, 7)], [(0, 8), (1, 9)], [(1, 8), (2, 9), (0, 9)]],
                 [[(1, 0), (2, 1)], [(2, 0), (1, 1)], [(1, 2), (3, 2)], [(2, 4), (3, 3)], [(2, 5), (2, 3)], [(3, 5), (2, 4)], [(1, 6), (3, 6)], [(1, 7), (2, 8)], [(2, 7)], [(1, 9), (3, 9)]],
                 [[(4, 0)], [(3, 2), (4, 1)], [(2, 2), (3, 1)], [(2, 3), (3, 4)], [(3, 3), (4, 4)], [(3, 6), (2, 5)], [(2, 6), (3, 5)], [(3, 8), (4, 7)], [(3, 9), (3, 7)], [(2, 9), (3, 8)]],
@@ -41,6 +57,8 @@ class MazeTest(unittest.TestCase):
                 [[(6, 0), (8, 0)], [(8, 1), (7, 2)], [(7, 1), (7, 3)], [(7, 2), (6, 3)], [(6, 4), (8, 4)], [(7, 6), (6, 5)], [(8, 6), (7, 5)], [(6, 7), (8, 7)], [(6, 8), (8, 8)], [(8, 9)]],
                 [[(7, 0), (9, 0)], [(8, 2), (7, 1)], [(9, 2), (8, 1)], [(8, 4)], [(7, 4), (8, 5), (8, 3)], [(8, 4), (9, 5)], [(8, 7), (7, 6)], [(7, 7), (8, 6)], [(7, 8), (9, 8)], [(9, 9), (7, 9)]],
                 [[(8, 0), (9, 1)], [(9, 0)], [(9, 3), (8, 2)], [(9, 4), (9, 2)], [(9, 5), (9, 3)], [(8, 5), (9, 4), (9, 6)], [(9, 5), (9, 7)], [(9, 6)], [(8, 8), (9, 9)], [(9, 8), (8, 9)]]]
+
+        self.maze = Maze.Maze(self.pre_made_maze)
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,7 +17,7 @@ class Maze:
         """
         return False
 
-    def go_direction(self, start, direction):
+    def _go_direction(self, start, direction):
         """
         Return a list of tuples that represents the straight-line path of
         going right in the specified direction until hitting a wall
@@ -69,26 +69,26 @@ class Maze:
             returned true
         """
 
-    def print_maze(self):
+    def __str__(self):
 
-        line = ""
+        str = ""
         for row in self.maze:  # top of maze
-            line += " _"
-        print(line)
-
+            str += " _"
+        str += "\n"
         # We only need to do one side of each connection: so start in top-left look east&south.
         for i, row in enumerate(self.maze):
-            line = "|"  # left of maze
+            str += "|"  # left of maze
             for j, cell in enumerate(row):
                 if (i + 1, j) in cell:
-                    line += " "
+                    str += " "
                 else:
-                    line += "_"
+                    str += "_"
                 if (i, j + 1) in cell:
-                    line += " "
+                    str += " "
                 else:
-                    line += "|"
-            print(line)
+                    str += "|"
+            str += "\n"
+        return str
 
 def make_maze(length):  # is this kind of method pythonic?
     """
