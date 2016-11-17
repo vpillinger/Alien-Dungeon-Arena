@@ -1,5 +1,6 @@
 import random
 
+
 def generate_maze(length):
     """Return a randomly generated maze of the specified dimension (length X length).
     This maze is represented as 3D python array. The first two dimension are i, j.
@@ -8,7 +9,6 @@ def generate_maze(length):
     Keyword arguments:
     length: the length of 1 side of the maze to produce a Length X Length maze
     """
-
 
     visited = set()
     directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
