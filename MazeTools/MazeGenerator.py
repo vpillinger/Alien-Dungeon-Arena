@@ -6,7 +6,7 @@ def generate_maze(length):
     The third dimension is the list of tuples representing adjacent spaces.
 
     Keyword arguments:
-    length -- the length of 1 side of the maze
+    length: the length of 1 side of the maze to produce a Length X Length maze
     """
 
 
