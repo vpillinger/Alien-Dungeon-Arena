@@ -69,6 +69,27 @@ class Maze:
             returned true
         """
 
+    def print_maze(self):
+
+        line = ""
+        for row in self.maze:  # top of maze
+            line += " _"
+        print(line)
+
+        # We only need to do one side of each connection: so start in top-left look east&south.
+        for i, row in enumerate(self.maze):
+            line = "|"  # left of maze
+            for j, cell in enumerate(row):
+                if (i + 1, j) in cell:
+                    line += " "
+                else:
+                    line += "_"
+                if (i, j + 1) in cell:
+                    line += " "
+                else:
+                    line += "|"
+            print(line)
+
 def make_maze(length):  # is this kind of method pythonic?
     """
     Factory method for making mazes that are already pre-generated at the specified size
