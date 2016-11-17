@@ -6,7 +6,12 @@ def generate_maze(length):
     The third dimension is the list of tuples representing adjacent spaces.
 
     Keyword arguments:
-    length -- the length of 1 side of the maze"""
+    length -- the length of 1 side of the maze
+    """
+
+
+    visited = set()
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
     def walk(maze, cur):
         #Randomly connect this node to an unvisited neighbor.
@@ -57,9 +62,6 @@ def generate_maze(length):
         return None, skip_rows
 
     #---- Method Start ----
-
-    visited = set()
-    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
     if(length == 0):
         return [[[]]]
