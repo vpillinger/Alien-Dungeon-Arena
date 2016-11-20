@@ -3,8 +3,8 @@ import random
 
 def generate_maze(length):
     """Return a randomly generated maze of the specified dimension (length X length).
-    This maze is represented as 3D python array. The first two dimension are i, j.
-    The third dimension is the list of tuples representing adjacent spaces.
+    This maze is represented as 2D python array. The first two dimension are i, j.
+    The maze returns a set() of tuples which represent that locations neighbors.
 
     Keyword arguments:
     length: the length of 1 side of the maze to produce a Length X Length maze
@@ -21,8 +21,8 @@ def generate_maze(length):
             n = (cur[0] + dir[0], cur[1] + dir[1])
             if (n[0] >= 0 and n[0] < len(maze)) and (n[1] >= 0 and n[1] < len(maze)) \
                     and (n not in visited):
-                maze[cur[0]][cur[1]].append(n)
-                maze[n[0]][n[1]].append(cur)
+                maze[cur[0]][cur[1]].add(n)
+                maze[n[0]][n[1]].add(cur)
                 visited.add(n)
                 visited.add(cur)
                 return n
@@ -36,8 +36,8 @@ def generate_maze(length):
             n = (cur[0] + dir[0], cur[1] + dir[1])
             if (n[0] >= 0 and n[0] < len(maze)) and (n[1] >= 0 and n[1] < len(maze)) \
                     and (n in visited):
-                maze[cur[0]][cur[1]].append(n)
-                maze[n[0]][n[1]].append(cur)
+                maze[cur[0]][cur[1]].add(n)
+                maze[n[0]][n[1]].add(cur)
                 visited.add(cur)
                 return cur
         return None
@@ -65,7 +65,7 @@ def generate_maze(length):
 
     if(length == 0):
         return [[[]]]
-    maze = [[[] for j in range(length)] for i in range(length)]
+    maze = [[set() for j in range(length)] for i in range(length)]
     cur, done_rows = (random.randrange(length), random.randrange(length)), 0
     while 1:
         cur = walk(maze, cur)
