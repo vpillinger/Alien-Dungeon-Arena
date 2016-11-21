@@ -1,4 +1,6 @@
+import sys
 from MazeTools import MazeGenerator
+from queue import PriorityQueue
 
 
 class Maze:
@@ -15,15 +17,26 @@ class Maze:
         :param first: a tuple (i,j) for the first location
         :param second: a tuple (i,j) for the second location
         """
-        return False
+        return second in self.maze[first[0]][first[1]]
 
-    def _go_direction(self, start, direction):
+    def get_neighbors(self, location):
+        """Return an array of tuples that represents the given locations neighbors."""
+        return self.maze[location[0]][location[1]]
+
+    def go_direction(self, start, direction):
         """
         Return a list of tuples that represents the straight-line path of
         going right in the specified direction until hitting a wall
 
         :param start: a tuple (i,j) for the starting location
         """
+        path = []
+        while 1:
+            cur = (start[0] + direction[0], start[1] + direction[1])
+            if cur not in self.maze[start[0]][start[1]]:
+                return path
+            start = cur
+            path.append(cur)
 
     def go_east(self, start):
         """
@@ -32,6 +45,7 @@ class Maze:
 
         :param start: a tuple (i,j) for the starting location
         """
+        return self.go_direction(start, (0,1))
 
     def go_west(self, start):
         """
@@ -40,6 +54,7 @@ class Maze:
 
         :param start: a tuple (i,j) for the starting location
         """
+        return self.go_direction(start, (0, -1))
 
     def go_north(self, start):
         """
@@ -48,26 +63,50 @@ class Maze:
 
         :param start: a tuple (i,j) for the starting location
         """
+        return self.go_direction(start, (-1, 0))
 
     def go_south(self, start):
         """
         Return a list of tuples that represents the straight-line path of
-        going right east until hitting a wall
+        going right east until hitting a wall.
 
         :param start: a tuple (i,j) for the starting location
         """
+        return self.go_direction(start, (1, 0))
 
-    def bfs(self, stop_function):
+    def path_to(self, start, end):
         """
-        Perform a breadth first search for the specified stop_function.
-        Once the stop_function returns true, then return the path to the location specified
-        by the stop function.
+        Dijkstra's search for shortest path from start tuple to end tuple.
+        :param start: tuple to start
+        :param end: Tuple to end
+        :return: Array of tuples not including starting location but including ending location
+        """
+        visited = set()
+        dist = {start:0}
+        prev_list = {}
+        queue = PriorityQueue()
 
-        :param stop_function: a function that takes a tuple (i,j)
-            and returns true if the current location is the destination location
-        :return: a list of tuples that is the path to the space on which stop_function
-            returned true
-        """
+        queue.put((0, start)) # dijkstra's
+        while queue is not queue.empty():
+            cur = queue.get()[1]
+            if(cur == end):
+                break
+            for neighbor in self.maze[cur[0]][cur[1]]:
+                cur_distance = dist[cur] + 1
+                neighbor_distance =  dist[neighbor] if (neighbor in dist) else sys.maxsize
+                if cur_distance < neighbor_distance:
+                    dist[neighbor] = cur_distance
+                    prev_list[neighbor] = cur
+                    queue.put((cur_distance, neighbor))
+        path = [] #constuct path
+        prev = end
+        while 1:
+            if(prev == start):
+                break
+            path.insert(0,prev)
+            prev = prev_list[prev]
+
+        return path
 
     def __str__(self):
 
