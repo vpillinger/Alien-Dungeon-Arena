@@ -59,7 +59,6 @@ class MazeTest(unittest.TestCase):
         self.assertEquals([(0,1)], self.maze.path_to((0, 0), (0, 1)))
 
     def test_path_to_returns_shortest_path(self):
-        print(self.maze)
         self.assertEquals([(1, 0), (2, 0), (2, 1), (1, 1), (1, 2)],
                           self.maze.path_to((0, 0), (1, 2)))
 
