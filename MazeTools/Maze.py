@@ -98,6 +98,7 @@ class Maze:
                     dist[neighbor] = cur_distance
                     prev_list[neighbor] = cur
                     queue.put((cur_distance, neighbor))
+
         path = [] #constuct path
         prev = end
         while 1:
@@ -128,6 +129,7 @@ class Maze:
                     str += "|"
             str += "\n"
         return str
+
 
 def make_maze(length):  # is this kind of method pythonic?
     """
