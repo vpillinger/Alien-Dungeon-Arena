@@ -5,10 +5,11 @@ class Entity():
     physical objects have.
     """
 
-    def __init__(self, turn_taker, hp_manager):
+    def __init__(self, turn_taker, hp_manager, blocks_vision = True):
         self.turn_taker = turn_taker
         self.hp_manager = hp_manager
         self.marked_for_destruction = False
+        self.blocks_vision = blocks_vision
 
     def take_turn(self):
         """ Use this entity's TurnTaker to take a game turn. It returns an integer cd value in AUT."""

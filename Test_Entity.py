@@ -2,6 +2,12 @@ import unittest
 import Entity
 
 class Test_Entity(unittest.TestCase):
+
+    def test_blocks_vision_property_is_set(self):
+        self.assertEqual(True, self.entity.blocks_vision)
+        entity = Entity.Entity(TurnTaker(), Hp_Manager(), False)
+        self.assertEqual(False, entity.blocks_vision)
+
     def test_should_return_cd_in_aut_from_turn_taker(self):
         self.assertEqual(10, self.entity.take_turn())
 
