@@ -2,7 +2,7 @@ import unittest
 from MazeTools import Maze
 
 
-class MazeTest(unittest.TestCase):
+class Test_Maze(unittest.TestCase):
 
     def test_init_maze(self):
         self.assertEquals(self.pre_made_maze, self.maze.maze)

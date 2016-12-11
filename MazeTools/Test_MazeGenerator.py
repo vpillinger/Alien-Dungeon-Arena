@@ -4,7 +4,7 @@ from collections import deque
 from MazeTools import MazeGenerator
 
 
-class MazeGeneratorTest(unittest.TestCase):
+class Test_MazeGenerator(unittest.TestCase):
 
     # Size & Length Tests
     def test_size_0(self):
