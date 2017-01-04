@@ -1,7 +1,7 @@
 import unittest
-import Hp_Manager
+import HpManager
 
-class Test_Hp_Manager(unittest.TestCase):
+class Test_HpManager(unittest.TestCase):
 
     def test_should_heal_full_amount_if_final_amount_is_less_than_max(self):
         self.hp_manager.heal(50)
@@ -25,7 +25,7 @@ class Test_Hp_Manager(unittest.TestCase):
         self.assertEqual(True, self.hp_manager.take_damage("normal", 25))
 
     def setUp(self):
-        self.hp_manager = Hp_Manager.Hp_Manager(100)
+        self.hp_manager = HpManager.Hp_Manager(100)
         self.hp_manager.current_hp = 25
 
 if __name__ == '__main__':
